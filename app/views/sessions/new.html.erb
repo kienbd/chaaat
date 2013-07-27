@@ -1,0 +1,12 @@
+<div class="row center hero-unit">
+  <%= form_tag sessions_path ,class: "login-form" do %>
+    <%= text_field_tag :email,nil ,placeholder: "Email" %>
+    <%= password_field_tag :password %>
+    <%= submit_tag "Sign in", class: "btn btn-large btn-primary" %>
+  <% end %>
+
+  <div class="authen-btns">
+    <p><%= link_to "Join now!",signup_path %></p>
+  </div>
+</div>
+
