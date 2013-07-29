@@ -1,4 +1,10 @@
 Chaaaat::Application.routes.draw do
+  resources :rooms
+
+
+  resources :messages
+
+
   resources :users
   resources :sessions
   match '/signup', to: 'users#new'

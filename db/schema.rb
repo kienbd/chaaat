@@ -11,7 +11,38 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727023630) do
+ActiveRecord::Schema.define(:version => 20130729033333) do
+
+  create_table "message_recipients", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "user_id"
+    t.string   "status",     :default => "unseen"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  create_table "messages", :force => true do |t|
+    t.string   "content"
+    t.integer  "sent_id"
+    t.integer  "room_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "rooms", :force => true do |t|
+    t.string   "name"
+    t.integer  "owner_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_room_relationships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "room_id"
+    t.boolean  "admin",      :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"
