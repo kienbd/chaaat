@@ -1,4 +1,5 @@
 <% broadcast "/messages/new/#{@message.room_id}" do %>
   $("#chat").append("<%=j render partial: "message",locals:{message: @message}%>");
 <% end %>
-$("#new_message")[0].reset();
+CKEDITOR.instances.message_content.setData("");
+CKEDITOR.instances.message_content.focus();

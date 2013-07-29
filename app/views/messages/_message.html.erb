@@ -1,1 +1,1 @@
-<li><span><strong><%= message.owner.name %></strong></span> : <%=message.content%>
+<li><span><%= image_tag message.owner.avatar.url %><strong><%= message.owner.name %></strong></span> : <%= simple_format(message.content)%>

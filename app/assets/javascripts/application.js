@@ -13,13 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require ckeditor/init
 
-
-
-
-// $(function() {
-  // var faye = new Faye.Client('http://localhost:9292/faye');
-  // faye.subscribe('/messages/new', function (data) {
-    // eval(data);
-  // });
-// });
+var $subcriber =  function(id) {
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  faye.subscribe('/messages/new/' + id, function (data) {
+    eval(data);
+  });
+};

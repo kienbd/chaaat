@@ -9,4 +9,10 @@ class Room < ActiveRecord::Base
 
   validates :name,length: {within: 2..128}
 
+  after_create :add_owner_to_member
+
+  def add_owner_to_member
+    self.user_room_relationships.create(user_id: self.owner_id,admin: true)
+  end
+
 end

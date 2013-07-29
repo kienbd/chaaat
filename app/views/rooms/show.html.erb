@@ -1,57 +1,41 @@
-<!--
-<div class="chat_container">
-  <div id="chat_room">
-  </div>
-
-  <form id="new_message_form">
-    <input type="text" id="message" name="message">
-    <input type="submit" value="Send">
-  </form>
-</div>
-
-<script>
-  $(function() {
-    // Create a new client to connect to Faye
-    var client = new Faye.Client('http://localhost:9292/faye');
- 
-    var public_subscription = client.subscribe('/messages/public', function(data) {
-      $('<p></p>').html(data.username + ": " + data.msg).appendTo('#chat_room');
-    });
-
-    // Handle form submissions and post messages to faye
-    $('#new_message_form').submit(function(){
-      // Publish the message to the public channel
-      client.publish('/messages/public', {
-        msg: $('#message').val()
-      });
- 
-      // Clear the message box
-      $('#message').val('');
- 
-      // Don't actually submit the form, otherwise the page will refresh.
-      return false;
-    });
-  });
-</script>
--->
-
+<div style="height: 300px;overflow-x:hidden;overflow-y:scroll">
 <ul id="chat" style="list-style: none">
   <%= render @messages if @messages%>
 </ul>
+</div>
 
 <%= form_for Message.new, :remote => true do |f| %>
-  <%= f.text_field :content %>
+  <%= f.cktext_area :content,:ckeditor => {:height => 200,:width => 650,:resize_enabled => false} %>
   <%= f.hidden_field :room_id,value: @room.id %>
   <%= f.hidden_field :sent_id,value: current_user.id %>
   <%= f.submit "Send" %>
 <% end %>
 
 <script type="text/javascript">
-
-$(function() {
-  var faye = new Faye.Client('http://localhost:9292/faye');
-  faye.subscribe("/messages/new/<%= @room.id %>", function (data) {
-    eval(data);
-  });
+$subcriber(<%= @room.id %>);
+CKEDITOR.config.toolbar = [
+   ['Styles','Font','FontSize'],
+   ['Bold','Italic','Underline','StrikeThrough','-','TextColor'],
+   ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+   ['Smiley']
+] ;
+CKEDITOR.config.removePlugins = 'elementspath';
+CKEDITOR.instances.message_content.on( 'key', function( event ) {
+  if ( event.data.keyCode == 13 ) {
+    event.cancel();
+    $("input[name='commit']").click();
+  }
 });
 </script>
+
+<style type="text/css">
+  li img {
+    height: 50px;
+    width: 50px;
+  }
+  li {
+    position: relative;
+    display: block;
+    content: "";
+  }
+</style>

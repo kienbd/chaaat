@@ -16,6 +16,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     @room = Room.find(params[:id])
+    @messages = current_user.recent_messages_in_room @room.id
 
     respond_to do |format|
       format.html # show.html.erb
