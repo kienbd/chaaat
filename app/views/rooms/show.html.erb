@@ -1,8 +1,13 @@
-<div style="height: 300px;overflow-x:hidden;overflow-y:scroll">
+<div id="unseen-cnt">
+<%= @unseens.count %>
+</div>
+<div style="height: 300px;overflow-x:hidden;overflow-y:scroll" id="chat-holder">
 <ul id="chat" style="list-style: none">
   <%= render @messages if @messages%>
 </ul>
 </div>
+
+<%= render partial: "users_in_room",locals: {room: @room} %>
 
 <%= form_for Message.new, :remote => true do |f| %>
   <%= f.cktext_area :content,:ckeditor => {:height => 200,:width => 650,:resize_enabled => false} %>
@@ -11,21 +16,42 @@
   <%= f.submit "Send" %>
 <% end %>
 
+<% if @room.is_admin?(current_user.id)  %>
+  <%= render partial: "users_select",locals: {room: @room} %>
+<% end %>
+
 <script type="text/javascript">
 $subcriber(<%= @room.id %>);
-CKEDITOR.config.toolbar = [
-   ['Styles','Font','FontSize'],
-   ['Bold','Italic','Underline','StrikeThrough','-','TextColor'],
-   ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-   ['Smiley']
-] ;
-CKEDITOR.config.removePlugins = 'elementspath';
-CKEDITOR.instances.message_content.on( 'key', function( event ) {
-  if ( event.data.keyCode == 13 ) {
-    event.cancel();
-    $("input[name='commit']").click();
-  }
-});
+$subcriber.cuid = <%= current_user.id %>;
+$(document).ready(function() {
+  $("#chat-holder").scrollTop($("#chat-holder ul").height() + 100);
+  window.unseen_message = window.unseen_message == undefined ? [] : window.unseen_message;
+  <% if @unseens.count > 0 %>
+      window.unseen_message[<%= @room.id %>] = true;
+  <% else %>
+      window.unseen_message[<%= @room.id %>] = false;
+  <% end %>
+  $('body').mousemove(function(e) {
+    if(window.unseen_message[<%= @room.id %>]) {
+      window.unseen_message[<%= @room.id %>] = false;
+      $.ajax({
+        dataType: 'script',
+        type: 'get',
+        url: '/users/change_read_status' ,
+        data: {room_id: <%= @room.id%>},
+        success : function() {
+        }
+      });
+    }
+  });
+  CKEDITOR.instances.message_content.on( 'key', function( event ) {
+    if ( event.data.keyCode == 13 ) {
+      event.cancel();
+      $("input[name='commit']").click();
+    }
+  });
+  CKEDITOR.instances.message_content.setData("");
+})
 </script>
 
 <style type="text/css">
@@ -37,5 +63,11 @@ CKEDITOR.instances.message_content.on( 'key', function( event ) {
     position: relative;
     display: block;
     content: "";
+  }
+  li.unseen {
+    background-color: #f4f6f9 !important;
+  }
+  li.seen {
+    background-color: white !important;
   }
 </style>

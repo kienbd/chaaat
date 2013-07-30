@@ -1,19 +1,21 @@
 <h1>Listing rooms</h1>
 
 <table>
+  <strong> Unseen Messages: <%= @unseens.count %></strong>
+  <% @rooms.each do |room| %>
   <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @rooms.each do |room| %>
-  <tr>
-    <td><%= room.name %></td>
+    <td><%= room.name %>
+    <% if current_user.unseen_messages_in_room(room.id).count > 0  %>
+      <strong>(<%= current_user.unseen_messages_in_room(room.id).count %>)</strong></td>
+    <% end %>
     <td><%= link_to 'Show', room %></td>
     <td><%= link_to 'Edit', edit_room_path(room) %></td>
     <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <td class="last-message">
+    <% if current_user.unseen_messages_in_room(room.id).count > 0 %>
+      <%= simple_format(current_user.unseen_messages_in_room(room.id).last.content) %>
+    <% end %>
+  </td>
   </tr>
 <% end %>
 </table>

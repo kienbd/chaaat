@@ -14,10 +14,54 @@
 //= require jquery_ujs
 //= require_tree .
 //= require ckeditor/init
-
+//
 var $subcriber =  function(id) {
   var faye = new Faye.Client('http://localhost:9292/faye');
   faye.subscribe('/messages/new/' + id, function (data) {
     eval(data);
   });
 };
+
+var call_on_room_add_member = function(user_id,room_id) {
+    $.ajax({
+      dataType: 'script',
+      type: 'get',
+      url: '/rooms/add_member' ,
+      data: {room_id:  room_id,user_id: user_id},
+      success : function() {
+      }
+    });
+}
+
+var call_on_room_remove_member = function(user_id,room_id) {
+    $.ajax({
+      dataType: 'script',
+      type: 'get',
+      url: '/rooms/remove_member' ,
+      data: {room_id:  room_id,user_id: user_id},
+      success : function() {
+      }
+    });
+}
+
+var call_on_room_toggle_admin = function(user_id,room_id) {
+    $.ajax({
+      dataType: 'script',
+      type: 'get',
+      url: '/rooms/toggle_admin' ,
+      data: {room_id:  room_id,user_id: user_id},
+      success : function() {
+      }
+    });
+}
+
+CKEDITOR.config.toolbar = [
+   ['Styles','Font','FontSize'],
+   ['Bold','Italic','Underline','StrikeThrough','-','TextColor'],
+   ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+   ['Smiley']
+] ;
+CKEDITOR.config.removePlugins = 'elementspath';
+
+
+

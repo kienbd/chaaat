@@ -1,8 +1,4 @@
-<% if message.read_status(current_user.id) == "unseen" && current_user.id != message.owner.id %>
 <li class="unseen">
-<% else%>
-<li class="seen">
-<% end %>
   <span><%= image_tag message.owner.avatar.url %>
     <strong><%= message.owner.name %></strong>
   </span>

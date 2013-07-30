@@ -83,6 +83,14 @@ class UsersController < ApplicationController
   end
 
 
+  def change_read_status
+    current_user.read_in_room(params[:room_id])
+    respond_to do|format|
+      format.js
+    end
+  end
+
+
   private
 
   def correct_user

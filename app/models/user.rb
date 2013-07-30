@@ -13,21 +13,29 @@ class User < ActiveRecord::Base
 
   has_many :sent_messages,class_name: :Message,foreign_key: :sent_id
   has_many :rooms,class_name: :Room,foreign_key: :owner_id
+  has_many :user_room_relationships
   has_many :recipients,class_name: :MessageRecipient,foreign_key: :user_id
   has_many :unseen_recipients,class_name: :MessageRecipient,foreign_key: :user_id,conditions: {status: "unseen"}
   has_many :received_messages,through: :recipients,source: :message
   has_many :unseen_messages,through: :unseen_recipients,source: :message
+  has_many :access,through: :user_room_relationships,source: :room
 
 
   mount_uploader :avatar, AvatarUploader
 
 
   def recent_messages_in_room room_id
-    self.received_messages.where(room_id: room_id)
+    self.received_messages.where("room_id = ? AND `message_recipients`.created_at > ?", room_id, 1.days.ago)
   end
 
   def unseen_messages_in_room room_id
-    self.unseen_messages.where(room_id: room_id)
+    self.unseen_messages.where("room_id = ? ", room_id)
+  end
+
+  def read_in_room room_id
+    self.unseen_messages_in_room(room_id).each do |m|
+      m.message_recipients.where("user_id = ?",self.id).each { |r| r.update_attributes(status: "seen") }
+    end
   end
 
   private

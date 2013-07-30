@@ -2,9 +2,11 @@ class RoomsController < ApplicationController
   # GET /rooms
   # GET /rooms.json
 
-  before_filter :signed_in_user,only: [:show]
+  before_filter :signed_in_user,only: [:show,:index]
   def index
-    @rooms = Room.all
+    # @rooms = Room.all
+    @rooms = current_user.access
+    @unseens = current_user.unseen_messages
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,6 +19,7 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
     @messages = current_user.recent_messages_in_room @room.id
+    @unseens = current_user.unseen_messages_in_room @room.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -83,4 +86,33 @@ class RoomsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def add_member
+    @room = Room.find(params[:room_id])
+    @room.add_member(params[:user_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+  def remove_member
+    @room = Room.find(params[:room_id])
+    @room.remove_member(params[:user_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def toggle_admin
+    @room = Room.find(params[:room_id])
+    @room.toggle_admin(params[:user_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
 end
