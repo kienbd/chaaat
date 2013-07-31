@@ -20,6 +20,13 @@
 <% end %>
 </table>
 
-<br />
+<%= render :partial => 'users_list' %>
 
 <%= link_to 'New Room', new_room_path %>
+
+<style type="text/css">
+  li img {
+    height: 50px;
+    width: 50px;
+  }
+</style>

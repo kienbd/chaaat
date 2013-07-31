@@ -1,5 +1,9 @@
 class Message < ActiveRecord::Base
+  include Rakismet::Model
+
   attr_accessible :content, :sent_id, :room_id
+  rakismet_attrs :content => :content
+
 
   belongs_to :owner, class_name: :User,foreign_key: :sent_id
   belongs_to :room
@@ -9,7 +13,7 @@ class Message < ActiveRecord::Base
 
   def create_recipients
     self.room.members.each do |m|
-      self.message_recipients.create(user_id: m.id) unless m.id == self.sent_id
+      self.message_recipients.create(user_id: m.id)
     end
   end
 

@@ -1,0 +1,21 @@
+<ul class="all-users-list">
+  <% User.all.each do |u| %>
+   <% if !current_user?(u) %>
+     <li>
+      <%= image_tag u.avatar_url %>
+      <%= u.username  %>
+      <% if room = current_user.has_p2p_room?(u.id) %>
+        <strong>
+        <a href="/rooms/<%= room.id %>">
+          CHAT
+        </a>
+      </strong>
+    <% else %>
+      <strong>
+      <%= link_to "CHAT",create_p2p_rooms_path(user1_id: current_user.id,user2_id: u.id), method: "post"%>
+    </strong>
+      <% end %>
+     </li>
+   <% end %>
+  <% end %>
+</ul>

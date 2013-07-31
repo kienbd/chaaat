@@ -7,7 +7,9 @@
 </ul>
 </div>
 
-<%= render partial: "users_in_room",locals: {room: @room} %>
+<ul style="list-style: none" class="users-in-room">
+  <%= render :partial => 'user_in_room', :collection => @room.members,locals: {room: @room} %>
+</ul>
 
 <%= form_for Message.new, :remote => true do |f| %>
   <%= f.cktext_area :content,:ckeditor => {:height => 200,:width => 650,:resize_enabled => false} %>
@@ -17,7 +19,9 @@
 <% end %>
 
 <% if @room.is_admin?(current_user.id)  %>
-  <%= render partial: "users_select",locals: {room: @room} %>
+  <ul style="list-style: none" class="users-select">
+    <%= render :partial => 'user_select', :collection => User.all,locals: {room: @room} %>
+  </ul>
 <% end %>
 
 <script type="text/javascript">
@@ -66,6 +70,12 @@ $(document).ready(function() {
   }
   li.unseen {
     background-color: #f4f6f9 !important;
+  }
+  li.not-in-room {
+    background-color: #f4f6f9 !important;
+  }
+  li.in-room {
+    background-color: white !important;
   }
   li.seen {
     background-color: white !important;

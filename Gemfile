@@ -21,6 +21,8 @@ gem "faye", "~> 0.8.9"
 gem "statemachine", "~> 2.2.0"
 gem "ckeditor", "~> 4.0.4"
 
+gem "rakismet", "~> 1.3.0"
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
-  attr_accessible :avatar, :email, :gender, :location, :name,:password,:password_confirmation
+  attr_accessible :avatar, :email, :gender, :location, :username,:password,:password_confirmation
 
   has_secure_password
   before_save { |user| user.email = email.downcase }
   before_save :create_persistence_token
 
-  validates :name, presence: true, length: { maximum: 50 }
+  validates :username, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false}
 
@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
+  def avatar_url
+    self.avatar.url.nil? ? "default_avatar.jpg" : self.avatar.url
+  end
 
   def recent_messages_in_room room_id
     self.received_messages.where("room_id = ? AND `message_recipients`.created_at > ?", room_id, 1.days.ago)
@@ -36,6 +39,10 @@ class User < ActiveRecord::Base
     self.unseen_messages_in_room(room_id).each do |m|
       m.message_recipients.where("user_id = ?",self.id).each { |r| r.update_attributes(status: "seen") }
     end
+  end
+
+  def has_p2p_room? user_id
+    Room.where(owner_id: [self.id,user_id]).keep_if{|m| ([self.id,user_id]-m.member_ids).empty?}.first
   end
 
   private

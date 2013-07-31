@@ -55,6 +55,17 @@ var call_on_room_toggle_admin = function(user_id,room_id) {
     });
 }
 
+var create_p2p = function(user1_id,user2_id) {
+  $.ajax({
+    dataType: 'html',
+    type: 'post',
+    url: '/rooms/create_p2p',
+    data: {user1_id: user1_id,user2_id: user2_id},
+    success : function() {
+    }
+  })
+}
+
 CKEDITOR.config.toolbar = [
    ['Styles','Font','FontSize'],
    ['Bold','Italic','Underline','StrikeThrough','-','TextColor'],

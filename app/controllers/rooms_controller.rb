@@ -97,6 +97,22 @@ class RoomsController < ApplicationController
   end
 
 
+  def create_p2p
+    @user1 = params[:user1_id]
+    @user2 = params[:user2_id]
+    id = Room.count + 1
+    @room = Room.create(name: "Room\##{id}",owner_id: params[:user1_id])
+    @room.save
+    @room.add_member(params[:user2_id])
+    @room.toggle_admin(params[:user2_id])
+
+    respond_to do |format|
+      format.html {redirect_to @room}
+      format.js
+    end
+  end
+
+
   def remove_member
     @room = Room.find(params[:room_id])
     @room.remove_member(params[:user_id])

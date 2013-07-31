@@ -42,13 +42,20 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(params[:message])
 
-    respond_to do |format|
-      if @message.save
-        format.html { redirect_to @message, notice: 'Message was successfully created.' }
-        format.js
-      else
-        format.html { render action: "new" }
+    spam = false
+    time = Time.now - session['antispam_timestamp']
+    spam = time < ANTISPAM_THRESHOLD ? true : false
+    if !spam
+      respond_to do |format|
+        if @message.save
+          format.html { redirect_to @message, notice: 'Message was successfully created.' }
+          format.js
+        else
+          format.html { render action: "new" }
+        end
       end
+    else
+      format.js {render spam.js}
     end
   end
 

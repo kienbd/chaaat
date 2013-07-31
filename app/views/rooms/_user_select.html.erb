@@ -1,0 +1,15 @@
+<% if !room.is_member?(user_select.id) %>
+  <li id="user-select-<%= room.id %>-<%= user_select.id %>" class="not-in-room">
+<% else %>
+  <li id="user-select-<%= room.id %>-<%= user_select.id %>" class="in-room">
+<% end %>
+    <%= image_tag user_select.avatar_url %>
+    <%= user_select.username %>
+  <span class="add-btn">
+  <% if !room.is_member?(user_select.id) %>
+    <a onclick="call_on_room_add_member(<%= user_select.id %>,<%= room.id %>)">
+      Add
+    </a>
+  </span>
+<% end %>
+</li>

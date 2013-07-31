@@ -3,8 +3,8 @@
 <% else%>
 <li class="seen">
 <% end %>
-  <span><%= image_tag message.owner.avatar.url %>
-    <strong><%= message.owner.name %></strong>
+  <span><%= image_tag message.owner.avatar_url %>
+    <strong><%= message.owner.username %></strong>
   </span>
   : <%= simple_format(message.content)%>
 </li>

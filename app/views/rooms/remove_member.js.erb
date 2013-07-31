@@ -1,1 +1,3 @@
-$("#user-list-room-<%= @room.id %>-<%= params[:user_id] %>").remove();
+$("#user-in-room-<%= @room.id %>-<%= params[:user_id] %>").remove();
+$("#user-select-<%= @room.id %>-<%= params[:user_id] %>").removeClass("in-room").addClass("not-in-room");
+$("#user-select-<%= @room.id %>-<%= params[:user_id] %> .add-btn").html("<a onclick='call_on_room_add_member(<%= params[:user_id] %>,<%= @room.id %>)'>Add</a>");

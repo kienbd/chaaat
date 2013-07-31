@@ -1,1 +1,3 @@
-$("#user-list-room-<%= @room.id %>-<%= params[:user_id] %>").remove();
+$("#user-select-<%= @room.id %>-<%= params[:user_id] %>").removeClass("not-in-room").addClass("in-room");
+$("#user-select-<%= @room.id %>-<%= params[:user_id] %> .add-btn").html("");
+$(".users-in-room").append("<%=j render :partial => 'user_in_room',locals: {user_in_room: User.find(params[:user_id]),room: @room}  %>");
