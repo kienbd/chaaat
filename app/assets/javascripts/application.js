@@ -15,12 +15,6 @@
 //= require_tree .
 //= require ckeditor/init
 //
-var $subcriber =  function(id) {
-  var faye = new Faye.Client('http://localhost:9292/faye');
-  faye.subscribe('/messages/new/' + id, function (data) {
-    eval(data);
-  });
-};
 
 var call_on_room_add_member = function(user_id,room_id) {
     $.ajax({
@@ -64,6 +58,27 @@ var create_p2p = function(user1_id,user2_id) {
     success : function() {
     }
   })
+}
+
+var toggle_user_fnc = function() {
+  if($(".hidden-fnc").is(":visible"))
+    $(".hidden-fnc").hide();
+  else
+    $(".hidden-fnc").show();
+
+}
+
+var readURL = function(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      if ($('.avatar-frame')) {
+        $('.avatar-frame img').attr('src',e.target.result);
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }
 
 CKEDITOR.config.toolbar = [

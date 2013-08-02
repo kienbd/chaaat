@@ -1,45 +1,37 @@
-<%= form_for @user,:html => {:multipart => true} do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_for @user,:html => {:multipart => true,:class => "web-form"} do |f| %>
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.label :username %>
+    <%= f.text_field :username %>
   </div>
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.text_field :email %>
   </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
+  <% if !signed_in? %>
+    <div class="field">
+      <label> Password </label>
+      <%= f.password_field :password %>
+    </div>
+    <div class="field">
+      <label> Confirmation </label>
+      <%= f.password_field :password_confirmation %>
+    </div>
+  <% end %>
+  <div class="field avatar-frame">
+    <%= f.label :avatar %>
+    <img src='/assets/<%= @user.avatar_url %>'>
+    <input type='file' name='user[avatar]' onchange="readURL(this)">
   </div>
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %>
-  </div>
-  <div class="field">
-    <%= f.label :avatar %><br />
-    <%= f.file_field :avatar %>
-  </div>
-  <div class="field">
-    <%= f.label :gender %><br />
+    <%= f.label :gender %>
     <%= f.select :gender,["Male","Female","Gay"] %>
   </div>
   <div class="field">
-    <%= f.label :location %><br />
+    <%= f.label :location %>
     <%= f.text_field :location %>
   </div>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+

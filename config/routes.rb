@@ -6,11 +6,12 @@ Chaaaat::Application.routes.draw do
       get :toggle_admin
       post :create_p2p
     end
+    member do
+      delete :drop_room
+    end
   end
 
-
   resources :messages
-
 
   resources :users do
     collection do

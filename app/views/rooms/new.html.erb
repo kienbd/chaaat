@@ -1,5 +1,9 @@
-<h1>New room</h1>
 
-<%= render 'form' %>
+<div style="margin-right: 300px">
+  <h1 class="big-title">New room</h1>
+  <%= render 'form' %>
+</div>
 
-<%= link_to 'Back', rooms_path %>
+<div class="rightCol user-list">
+  <%= render :partial => 'users_list' %>
+</div>

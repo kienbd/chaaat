@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
+  before_filter :signed_in_user
   def index
     @messages = Message.all
 
@@ -48,14 +49,13 @@ class MessagesController < ApplicationController
     if !spam
       respond_to do |format|
         if @message.save
-          format.html { redirect_to @message, notice: 'Message was successfully created.' }
           format.js
         else
-          format.html { render action: "new" }
+          format.js { render action: "new" }
         end
       end
     else
-      format.js {render spam.js}
+      format.js {render action: 'new'}
     end
   end
 

@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+  before_filter :signed_in_user,only: [:index,:edit,:update,:change_read_status]
   before_filter :correct_user, only: [:edit,:update]
+  before_filter :not_signed_in_user,only: [:new,:create]
   def index
     @users = User.all
 
@@ -45,7 +47,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html {
+          sign_in(@user)
+          redirect_to root_path
+        }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -61,7 +66,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html {
+          sign_in(@user)
+          redirect_to root_path
+        }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

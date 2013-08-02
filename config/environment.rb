@@ -4,4 +4,4 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 Chaaaat::Application.initialize!
 
-ANTISPAM_THRESHOLD = 100
+ANTISPAM_THRESHOLD = 10

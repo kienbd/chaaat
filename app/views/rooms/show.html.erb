@@ -1,33 +1,52 @@
-<div id="unseen-cnt">
-<%= @unseens.count %>
+<div class="room-content-holder">
+  <div class="room-content">
+    <div class="leftCol">
+      <h1 class="big-title"> Users In Room </h1>
+      <ul style="list-style: none" class="users-in-room">
+        <%= render :partial => 'user_in_room', :collection => @room.members,locals: {room: @room} %>
+      </ul>
+    </div>
+    <div class="main-room">
+      <div class="room-info">
+        <h2> <%= @room.name %>(
+          <div id="unseen-cnt">
+            <%= @unseens.count %>
+          </div>
+          )
+        </h2>
+      </div>
+      <div id="chat-holder">
+        <ul id="chat" style="list-style: none">
+          <%= render @messages if @messages%>
+        </ul>
+      </div>
+      <div id="input-holder">
+        <%= form_for Message.new, :remote => true do |f| %>
+          <%= f.cktext_area :content,:ckeditor => {:height => 100,:resize_enabled => false} %>
+          <%= f.hidden_field :room_id,value: @room.id %>
+          <%= f.hidden_field :sent_id,value: current_user.id %>
+          <%= f.submit "Enter to Send" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-<div style="height: 300px;overflow-x:hidden;overflow-y:scroll" id="chat-holder">
-<ul id="chat" style="list-style: none">
-  <%= render @messages if @messages%>
-</ul>
+<div class="rightCol">
+  <% if @room.is_admin?(current_user.id)  %>
+    <h1 class="big-title"> Users List </h1>
+    <ul class="users-select">
+      <%= render :partial => 'user_select', :collection => User.all,locals: {room: @room} %>
+    </ul>
+  <% end %>
 </div>
 
-<ul style="list-style: none" class="users-in-room">
-  <%= render :partial => 'user_in_room', :collection => @room.members,locals: {room: @room} %>
-</ul>
 
-<%= form_for Message.new, :remote => true do |f| %>
-  <%= f.cktext_area :content,:ckeditor => {:height => 200,:width => 650,:resize_enabled => false} %>
-  <%= f.hidden_field :room_id,value: @room.id %>
-  <%= f.hidden_field :sent_id,value: current_user.id %>
-  <%= f.submit "Send" %>
-<% end %>
 
-<% if @room.is_admin?(current_user.id)  %>
-  <ul style="list-style: none" class="users-select">
-    <%= render :partial => 'user_select', :collection => User.all,locals: {room: @room} %>
-  </ul>
-<% end %>
 
 <script type="text/javascript">
-$subcriber(<%= @room.id %>);
-$subcriber.cuid = <%= current_user.id %>;
 $(document).ready(function() {
+  $subcriber(<%= @room.id %>);
+  $subcriber.cuid = <%= current_user.id %>;
   $("#chat-holder").scrollTop($("#chat-holder ul").height() + 100);
   window.unseen_message = window.unseen_message == undefined ? [] : window.unseen_message;
   <% if @unseens.count > 0 %>
@@ -58,26 +77,3 @@ $(document).ready(function() {
 })
 </script>
 
-<style type="text/css">
-  li img {
-    height: 50px;
-    width: 50px;
-  }
-  li {
-    position: relative;
-    display: block;
-    content: "";
-  }
-  li.unseen {
-    background-color: #f4f6f9 !important;
-  }
-  li.not-in-room {
-    background-color: #f4f6f9 !important;
-  }
-  li.in-room {
-    background-color: white !important;
-  }
-  li.seen {
-    background-color: white !important;
-  }
-</style>

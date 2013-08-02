@@ -22,6 +22,7 @@ gem "statemachine", "~> 2.2.0"
 gem "ckeditor", "~> 4.0.4"
 
 gem "rakismet", "~> 1.3.0"
+gem "foreman", "~> 0.63.0"
 
 # Gems used only for assets and not required
 # in production environments by default.

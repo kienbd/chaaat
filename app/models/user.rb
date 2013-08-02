@@ -27,8 +27,12 @@ class User < ActiveRecord::Base
     self.avatar.url.nil? ? "default_avatar.jpg" : self.avatar.url
   end
 
+  def all_messages_in_room room_id
+    self.received_messages.where("room_id = ? ", room_id)
+  end
+
   def recent_messages_in_room room_id
-    self.received_messages.where("room_id = ? AND `message_recipients`.created_at > ?", room_id, 1.days.ago)
+    self.received_messages.where("room_id = ? ", room_id).last(50)
   end
 
   def unseen_messages_in_room room_id
@@ -43,6 +47,10 @@ class User < ActiveRecord::Base
 
   def has_p2p_room? user_id
     Room.where(owner_id: [self.id,user_id]).keep_if{|m| ([self.id,user_id]-m.member_ids).empty?}.first
+  end
+
+  def online?
+    updated_at > 1.minutes.ago
   end
 
   private

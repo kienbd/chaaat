@@ -1,32 +1,53 @@
-<h1>Listing rooms</h1>
-
-<table>
-  <strong> Unseen Messages: <%= @unseens.count %></strong>
-  <% @rooms.each do |room| %>
-  <tr>
-    <td><%= room.name %>
-    <% if current_user.unseen_messages_in_room(room.id).count > 0  %>
-      <strong>(<%= current_user.unseen_messages_in_room(room.id).count %>)</strong></td>
+<h1 class="big-title" style="text-align: left;margin-left: 50px">Room List </h1>
+<div class="room-content-holder">
+  <div class="rooms-list">
+    <ul>
+    <% @rooms.each do |r| %>
+      <% unseens = current_user.unseen_messages_in_room(r.id) %>
+      <% unseens_cnt = unseens.count %>
+      <li class="clearfix room <%= "room-has-unseen" if unseens_cnt > 0 %>">
+        <div class="fleft">
+          <%= link_to (image_tag (unseens.empty? ? r.owner.avatar_url : unseens.last.owner.avatar_url),class: "medium_avatar"),r %>
+        </div>
+        <div class="cm-info">
+          <div class="room-name">
+            <%= link_to r.name,r %>
+            <div id="room-<%= r.id %>-unseen" class="room-list-unseen">
+              <%= "(#{unseens_cnt})" if unseens_cnt > 0 %>
+            </div>
+            <div class="time-stamp">
+              <%= "on #{r.messages.last.created_at.strftime("%A")}" if !r.messages.empty? %>
+            </div>
+          </div>
+          <div class="recent-messages-holder">
+            <% current_user.recent_messages_in_room(r.id).last(3).reverse.each do |m| %>
+              <div class="recent-message <%= "unseen-message" if unseens.include?(m) %>">
+                <strong><%= m.owner.username %> : </strong><%= simple_format(m.content) %>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <div class='clearfix room-bonus-info'>
+          <div class="new-message-cnt">
+            <%= "#{unseens_cnt} new messages" if unseens_cnt > 0 %>
+          </div>
+          <div class="room-functions">
+            <% if r.is_owner?(current_user.id) %>
+              <%= link_to 'Drop', r, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% else %>
+              <%= link_to 'Drop',drop_room_room_path(r),method: :delete,data: {confirm: 'Are you sure'} %>
+            <% end %>
+          </div>
+        </div>
+      </li>
     <% end %>
-    <td><%= link_to 'Show', room %></td>
-    <td><%= link_to 'Edit', edit_room_path(room) %></td>
-    <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  <td class="last-message">
-    <% if current_user.unseen_messages_in_room(room.id).count > 0 %>
-      <%= simple_format(current_user.unseen_messages_in_room(room.id).last.content) %>
-    <% end %>
-  </td>
-  </tr>
-<% end %>
-</table>
+    </ul>
+  </div>
+  <a href="<%= new_room_path %>" class="new-room">
+    +
+  </a>
+</div>
+<div class="rightCol user-list">
+  <%= render :partial => 'users_list' %>
+</div>
 
-<%= render :partial => 'users_list' %>
-
-<%= link_to 'New Room', new_room_path %>
-
-<style type="text/css">
-  li img {
-    height: 50px;
-    width: 50px;
-  }
-</style>

@@ -1,0 +1,30 @@
+<div class='header-bar-holder'>
+  <div class="header-bar">
+    <div class='page-header clearfix'>
+      <h1 id="logo">
+        <a href="/rooms">Chaaaat</a>
+      </h1>
+      <% if @unseens %>
+        <div class="unseen-global" id="unseen-cnt"> <%= @unseens.count%> </div>
+      <% end %>
+      <ul class="clearfix" >
+        <li class="user-info">
+          <a onclick="toggle_user_fnc()">
+            <%= image_tag current_user.avatar_url,class: "tiny_avatar"  %>
+            <span><%= current_user.username %></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="hidden-fnc">
+    <ul class="user-functions">
+      <li>
+        <%= link_to "Edit Profile",edit_user_path(current_user) %>
+      </li>
+      <li>
+        <a href="/signout">Sign Out</a>
+      </li>
+    </ul>
+  </div>
+</div>

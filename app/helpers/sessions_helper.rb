@@ -58,4 +58,12 @@ module SessionsHelper
     session[:return_to] = request.fullpath
   end
 
+  def store_hostname
+    session[:host_name] = request.host
+  end
+
+  def hostname
+    session[:host_name]
+  end
+
 end

@@ -1,6 +1,7 @@
-<h1>Editing user</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<div style="margin-right: 300px">
+  <h1 class="big-title">Editing user</h1>
+  <%= render 'form' %>
+</div>
+<div class="rightCol user-list">
+  <%= render :partial => 'rooms/users_list' %>
+</div>

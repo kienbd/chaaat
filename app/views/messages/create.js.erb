@@ -7,7 +7,7 @@
     $("#unseen-cnt").html(cnt);
   } else
     $("#chat").append("<%=j render partial: "message",locals:{message: @message}%>");
-  a = $("#chat-holder").scrollTop();
+  a = $("#chat-holder ul").height();
   $("#chat-holder").scrollTop(a + 100);
 <% end %>
 CKEDITOR.instances.message_content.setData("");

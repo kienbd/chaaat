@@ -2,9 +2,10 @@ class RoomsController < ApplicationController
   # GET /rooms
   # GET /rooms.json
 
-  before_filter :signed_in_user,only: [:show,:index]
+  before_filter :signed_in_user
   def index
     # @rooms = Room.all
+    store_hostname
     @rooms = current_user.access
     @unseens = current_user.unseen_messages
 
@@ -17,6 +18,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    store_hostname
     @room = Room.find(params[:id])
     @messages = current_user.recent_messages_in_room @room.id
     @unseens = current_user.unseen_messages_in_room @room.id
@@ -129,6 +131,17 @@ class RoomsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+
+  def drop_room
+    @room = Room.find(params[:id])
+    @room.user_room_relationships.find_by_user_id(current_user.id).destroy
+
+    respond_to do |format|
+      format.html { redirect_to rooms_url }
+    end
+
   end
 
 end
