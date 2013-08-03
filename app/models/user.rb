@@ -53,6 +53,10 @@ class User < ActiveRecord::Base
     updated_at > 1.minutes.ago
   end
 
+  def has_access? room_id
+    self.acces_ids.include?(room_id)
+  end
+
   private
 
   def create_persistence_token

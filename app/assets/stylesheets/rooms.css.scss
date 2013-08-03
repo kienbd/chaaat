@@ -44,9 +44,8 @@ h1 {
     margin-left: 250px;
     border-right: 1px solid #cdcecf;
     border-left: 1px solid #cdcecf;
-    min-height: 1000px;
     #chat-holder {
-      height: 380px;
+      min-height: 380px;
       overflow-x:hidden;
       overflow-y:scroll;
       ul {

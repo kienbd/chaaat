@@ -28,7 +28,7 @@ class Room < ActiveRecord::Base
   end
 
   def is_admin? user_id
-    self.user_room_relationships.find_by_user_id(user_id).admin
+    self.user_room_relationships.find_by_user_id(user_id).nil? ? false : self.user_room_relationships.find_by_user_id(user_id).admin
   end
 
   def is_member? user_id

@@ -13,7 +13,11 @@ class Message < ActiveRecord::Base
 
   def create_recipients
     self.room.members.each do |m|
-      self.message_recipients.create(user_id: m.id)
+      if self.sent_id != m.id
+        self.message_recipients.create(user_id: m.id)
+      else
+        self.message_recipients.create(user_id: m.id,status: "seen")
+      end
     end
   end
 

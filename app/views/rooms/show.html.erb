@@ -47,7 +47,6 @@
 $(document).ready(function() {
   $subcriber(<%= @room.id %>);
   $subcriber.cuid = <%= current_user.id %>;
-  $("#chat-holder").scrollTop($("#chat-holder ul").height() + 100);
   window.unseen_message = window.unseen_message == undefined ? [] : window.unseen_message;
   <% if @unseens.count > 0 %>
       window.unseen_message[<%= @room.id %>] = true;
@@ -67,6 +66,10 @@ $(document).ready(function() {
       });
     }
   });
+  h = window.innerHeight;
+  $(".main-room").css("height", h + "px");
+  $("#chat-holder").css("height",h - 300 + "px");
+  $("#chat-holder").scrollTop($("#chat-holder ul").height() + 100);
   CKEDITOR.instances.message_content.on( 'key', function( event ) {
     if ( event.data.keyCode == 13 ) {
       event.cancel();

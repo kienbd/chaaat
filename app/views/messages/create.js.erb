@@ -5,6 +5,7 @@
     window.unseen_message[<%= @message.room_id %>] = true;
     cnt = parseInt($("#unseen-cnt").html()) + 1;
     $("#unseen-cnt").html(cnt);
+    $("#unseen-cnt-glo").html(cnt);
   } else
     $("#chat").append("<%=j render partial: "message",locals:{message: @message}%>");
   a = $("#chat-holder ul").height();
