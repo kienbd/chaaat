@@ -7,7 +7,7 @@
         <%= user_in_room.username %>
       </strong>
       <div>
-        <% if room.members.count != 2 %>
+        <% if room.members.count > 2 %>
           <% if room.is_owner?(user_in_room.id) %>
             <strong style="color: red">"Owner"</strong>
           <% elsif room.is_admin?(user_in_room.id) %>
