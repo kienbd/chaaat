@@ -7,9 +7,9 @@ chaaat
 rake db:recreate
 ```
 
-* Seed 10 users
-	EmaiL : user1..10@gmail.com
-	Password : 123456789
+Seed 10 users
+*Email : user1..10@gmail.com
+*Password : 123456789
 
 
 ## Run server
