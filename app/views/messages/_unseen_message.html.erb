@@ -1,0 +1,13 @@
+<li class="unseen clearfix message">
+  <div class="fleft">
+    <%= image_tag message.owner.avatar_url,class: "small_avatar" %>
+  </div>
+  <div class="clearfix message-info">
+    <strong class="author-name">
+      <%= message.owner.username %>
+    </strong>
+    <div class='m-content'>
+      <%= simple_format(message.content)%>
+    </div>
+  </div>
+</li>

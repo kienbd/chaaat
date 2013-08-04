@@ -1,0 +1,5 @@
+<% if @room.is_admin?(params[:user_id]) %>
+  $("#user-in-room-<%= @room.id %>-<%= params[:user_id] %> .admin-btn strong").html("Remove Admin");
+<% else %>
+  $("#user-in-room-<%= @room.id %>-<%= params[:user_id] %> .admin-btn strong").html("Make Admin");
+<% end %>

@@ -1,0 +1,29 @@
+<ul class="all-users-list">
+  <% User.all.each do |u| %>
+   <% if !current_user?(u) %>
+     <li class="clearfix user">
+      <div class="fleft">
+        <%= image_tag u.avatar_url,class: "small_avatar" %>
+      </div>
+        <div class="clearfix cm-info">
+          <strong class="author-name">
+            <%= u.username  %>
+            <%= "Online" if u.online? %>
+          </strong>
+          <div>
+            <% if room = current_user.has_p2p_room?(u.id) %>
+              <strong>
+                <a href="/rooms/<%= room.id %>">
+                  CHAT
+                </a>
+              </strong>
+            <% else %>
+                <strong>
+                  <%= link_to "CHAT",create_p2p_rooms_path(user1_id: current_user.id,user2_id: u.id), method: "post"%>
+              </strong>
+            <% end %>
+          </div>
+      </li>
+    <% end %>
+  <% end %>
+</ul>

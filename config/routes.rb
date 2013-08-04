@@ -1,11 +1,29 @@
 Chaaaat::Application.routes.draw do
-  resources :users
+  resources :rooms do
+    collection do
+      get :add_member
+      get :remove_member
+      get :toggle_admin
+      post :create_p2p
+    end
+    member do
+      delete :drop_room
+    end
+  end
+
+  resources :messages
+
+  resources :users do
+    collection do
+      get :change_read_status
+    end
+  end
   resources :sessions
   match '/signup', to: 'users#new'
   match '/signin', to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :get
 
-  root to: 'users#new'
+  root to: 'rooms#index'
 
 
   # The priority is based upon order of creation:

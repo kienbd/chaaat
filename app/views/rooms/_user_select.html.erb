@@ -1,0 +1,23 @@
+<% if !current_user?(user_select) %>
+  <% if !room.is_member?(user_select.id) %>
+    <li id="user-select-<%= room.id %>-<%= user_select.id %>" class="not-in-room clearfix user ">
+  <% else %>
+    <li id="user-select-<%= room.id %>-<%= user_select.id %>" class="in-room clearfix user">
+  <% end %>
+      <div class="fleft">
+        <%= image_tag user_select.avatar_url,class: "small_avatar" %>
+      </div>
+      <div class="clearfix cm-info ">
+        <strong class="author-name">
+          <%= user_select.username %>
+        </strong>
+        <span class="add-btn">
+        <% if !room.is_member?(user_select.id) %>
+          <a onclick="call_on_room_add_member(<%= user_select.id %>,<%= room.id %>)">
+            Add
+          </a>
+        </span>
+        <% end %>
+      </div>
+  </li>
+<% end %>

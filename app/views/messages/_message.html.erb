@@ -1,0 +1,17 @@
+<% if message.read_status(current_user.id) == "unseen" && current_user.id != message.owner.id %>
+<li class="unseen clearfix message">
+<% else%>
+<li class="seen clearfix message">
+<% end %>
+<div class="fleft">
+  <%= image_tag message.owner.avatar_url,class: "small_avatar" %>
+</div>
+<div class="clearfix message-info">
+  <strong class="author-name">
+    <%= message.owner.username %>
+  </strong>
+  <div class='m-content'>
+    <%= simple_format(message.content)%>
+  </div>
+</div>
+</li>

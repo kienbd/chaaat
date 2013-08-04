@@ -1,0 +1,244 @@
+// Place all the styles related to the Rooms controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+h1 {
+  text-align: center;
+}
+
+.clearfix:after {
+  clear: both;
+  content: ".";
+  display: block;
+  font-size: 0;
+  height: 0;
+  line-height: 0;
+  visibility: hidden;
+}
+
+.room-content-holder {
+  padding-left: 10px;
+  position: relative;
+}
+.room-content {
+  margin: 0;
+  outline: none;
+  padding-right: 300px;
+  width: auto;
+  .leftCol {
+    position: absolute;
+    width: 260px;
+    background-color: #f2f4f8;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    ul {
+      padding-left: 0px;
+      padding-right: 5px;
+    }
+    li {
+      width: 240px;
+    }
+  }
+  .main-room {
+    margin-left: 250px;
+    border-right: 1px solid #cdcecf;
+    border-left: 1px solid #cdcecf;
+    #chat-holder {
+      min-height: 380px;
+      overflow-x:hidden;
+      overflow-y:scroll;
+      ul {
+        padding-left: 0px;
+      }
+    }
+    .room-info {
+      padding-top: 10px;
+      padding-left: 5px;
+      border-bottom: 1px solid #cdcecf;
+      box-shadow: 0px 1px rgba(0, 0, 0, .07);
+      background-color: #f4f6f9 !important;
+      h2 {
+        margin-top:0px;
+        margin-bottom: 10px;
+      }
+      #unseen-cnt {
+        display: inline-block;
+      }
+    }
+  }
+}
+.rightCol {
+  position: fixed;
+  width: 300px;
+  right: 0;
+  top: 0;
+  height: 100%;
+  ul {
+    list-style: none;
+    padding-left: 0px;
+    padding-right: 5px;
+  }
+
+  li.user-selector {
+    width: 290px;
+  }
+}
+#input-holder {
+  background-color: #f2f2f2;
+  border-top: 1px solid #cdcecf;
+  padding: 12px 19px 35px;
+  position: relative;
+  box-shadow: 0px -1px rgba(0, 0, 0, .07);
+  #cke_message_content {
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
+  input[type='submit'][name='commit'] {
+    position: absolute;
+    right: 20px;
+    bottom: 5px;
+  }
+}
+
+img.small_avatar {
+  width: 32px;
+  height: 32px;
+}
+img.medium_avatar {
+  width: 90px;
+  height: 90px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+img.tiny_avatar {
+  border: 1px solid #294a8f;
+  border-top: 1px solid #123682;
+  -webkit-border-radius: 2px;
+  height: 23px;
+  margin: 3px 5px 3px 3px;
+  width: 23px
+}
+
+.rooms-list {
+  margin-right: 300px;
+}
+.user-list {
+  height: 100%;
+  border-left: 1px solid #cdcecf;
+}
+.room {
+   border: 1px  solid #e8e8e8;
+   border-bottom: 0px;
+   &:last-child {
+     border-bottom: 1px solid #e8e8e8;
+   }
+   &:hover {
+      background-color: #f4f6f9;
+      border-color: #e3e8f0;
+      .new-message-cnt {
+        display: none;
+      }
+      .room-functions {
+        display: block !important;
+      }
+   }
+   height: 100px;
+   position: relative;
+  .fleft {
+    margin-right: 10px;
+    a:hover {
+      background: none;
+    }
+  }
+  .room-name {
+    font-size: 18px;
+    margin-top: 5px;
+    font-weight: bold;
+    .room-list-unseen {
+      display: inline-block;
+      color: red;
+    }
+    .time-stamp {
+      display: inline-block;
+      float: right;
+      margin-right: 25px;
+      font-size: 13px;
+      color: grey;
+      font-weight: normal;
+    }
+  }
+  .recent-messages-holder {
+    margin-top: 8px;
+  }
+  .recent-message {
+    font-size: 12px;
+    color: grey;
+    margin: 3px;
+    p {
+      margin: 0px;
+      display: inline-block;
+      font-size: 12px;
+    }
+  }
+  .unseen-message {
+    color: black;
+    font-weight: bold;
+  }
+  .room-bonus-info {
+    position: absolute;
+    top: 30px;
+    right: 25px;
+    text-align: right;
+    .new-message-cnt {
+      color: #8096c1
+    }
+    .room-functions {
+      display: inline-block;
+      padding: 4px;
+      color: white;
+      display: none;
+      a {
+        color: #3b5998;
+        background: none !important;
+      }
+      &:hover {
+        background-color: #3b5998;
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+}
+.room-has-unseen {
+    background-color: #eceff5 !important;
+    border-color: #e0e2ee;
+}
+.new-room {
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 40px;
+  border: 1px solid #e8e8e8;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+li {
+  position: relative;
+  display: block;
+  content: "";
+}
+li.unseen {
+  background-color: #f4f6f9 !important;
+}
+li.in-room {
+  background-color: #f2f4f8 !important;
+}
+li.not-in-room {
+  background-color: white !important;
+}
+li.seen {
+  background-color: white !important;
+}

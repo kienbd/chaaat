@@ -1,0 +1,34 @@
+<li id="user-in-room-<%= room.id %>-<%= user_in_room.id %>" class="user clearfix ">
+    <div class="fleft">
+      <%= image_tag user_in_room.avatar_url,class: "small_avatar" %>
+    </div>
+    <div class="clearfix cm-info ">
+      <strong class="author-name">
+        <%= user_in_room.username %>
+      </strong>
+      <div>
+        <% if room.members.count > 2 %>
+          <% if room.is_owner?(user_in_room.id) %>
+            <strong style="color: red">"Owner"</strong>
+          <% elsif room.is_admin?(user_in_room.id) %>
+            <% if room.is_owner?(current_user.id) %>
+              <a onclick="call_on_room_toggle_admin(<%= user_in_room.id %>,<%= room.id %>)" class="admin-btn">
+                <strong >Remove Admin</strong>
+              </a>
+            <% else %>
+              <strong style="color: violet">"Admin"</strong>
+            <% end %>
+          <% end %>
+          <% if room.is_owner?(current_user.id) && current_user.id != user_in_room.id && !room.is_admin?(user_in_room.id) %>
+            <a onclick="call_on_room_toggle_admin(<%= user_in_room.id %>,<%= room.id %>)" class="admin-btn">
+              <strong>Make Admin</strong>
+            </a>
+          <% end %>
+          <% if current_user.id != user_in_room.id && room.is_admin?(current_user.id) && !room.is_owner?(user_in_room.id) %>
+            <a onclick="call_on_room_remove_member(<%= user_in_room.id %>,<%= room.id %>)">
+              Kick out
+            </a>
+          <% end %>
+        <% end %>
+      </div>
+</li>

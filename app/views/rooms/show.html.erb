@@ -1,0 +1,82 @@
+<div class="room-content-holder">
+  <div class="room-content">
+    <div class="leftCol">
+      <h1 class="big-title"> Users In Room </h1>
+      <ul style="list-style: none" class="users-in-room">
+        <%= render :partial => 'user_in_room', :collection => @room.members,locals: {room: @room} %>
+      </ul>
+    </div>
+    <div class="main-room">
+      <div class="room-info">
+        <h2> <%= @room.name %>(
+          <div id="unseen-cnt">
+            <%= @unseens.count %>
+          </div>
+          )
+        </h2>
+      </div>
+      <div id="chat-holder">
+        <ul id="chat" style="list-style: none">
+          <%= render @messages if @messages%>
+        </ul>
+      </div>
+      <div id="input-holder">
+        <%= form_for Message.new, :remote => true do |f| %>
+          <%= f.cktext_area :content,:ckeditor => {:height => 100,:resize_enabled => false} %>
+          <%= f.hidden_field :room_id,value: @room.id %>
+          <%= f.hidden_field :sent_id,value: current_user.id %>
+          <%= f.submit "Enter to Send" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="rightCol">
+  <% if @room.is_admin?(current_user.id)  %>
+    <h1 class="big-title"> Users List </h1>
+    <ul class="users-select">
+      <%= render :partial => 'user_select', :collection => User.all,locals: {room: @room} %>
+    </ul>
+  <% end %>
+</div>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $subcriber(<%= @room.id %>);
+  $subcriber.cuid = <%= current_user.id %>;
+  window.unseen_message = window.unseen_message == undefined ? [] : window.unseen_message;
+  <% if @unseens.count > 0 %>
+      window.unseen_message[<%= @room.id %>] = true;
+  <% else %>
+      window.unseen_message[<%= @room.id %>] = false;
+  <% end %>
+  $('body').mousemove(function(e) {
+    if(window.unseen_message[<%= @room.id %>]) {
+      window.unseen_message[<%= @room.id %>] = false;
+      $.ajax({
+        dataType: 'script',
+        type: 'get',
+        url: '/users/change_read_status' ,
+        data: {room_id: <%= @room.id%>},
+        success : function() {
+        }
+      });
+    }
+  });
+  h = window.innerHeight;
+  $(".main-room").css("height", h + "px");
+  $("#chat-holder").css("height",h - 300 + "px");
+  $("#chat-holder").scrollTop($("#chat-holder ul").height() + 100);
+  CKEDITOR.instances.message_content.on( 'key', function( event ) {
+    if ( event.data.keyCode == 13 ) {
+      event.cancel();
+      $("input[name='commit']").click();
+    }
+  });
+  CKEDITOR.instances.message_content.setData("");
+})
+</script>
+

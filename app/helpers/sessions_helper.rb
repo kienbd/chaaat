@@ -45,6 +45,10 @@ module SessionsHelper
     cookies.delete(:persistence_token)
   end
 
+  def anti_spam
+    session['antispam_timestamp'] ||= Time.now
+  end
+
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
     session.delete(:return_to)
@@ -52,6 +56,14 @@ module SessionsHelper
 
   def store_location
     session[:return_to] = request.fullpath
+  end
+
+  def store_hostname
+    session[:host_name] = request.host
+  end
+
+  def hostname
+    session[:host_name]
   end
 
 end

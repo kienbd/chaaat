@@ -4,11 +4,29 @@
   <title>Chaaaat</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "http://#{hostname}:9292/faye.js" %>
+  <%= javascript_include_tag "http://#{hostname}:9292/faye/client.js" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
+  <% if signed_in? %>
+    <%= render 'layouts/header' %>
+  <% end %>
+  <div class="container" id="appContent">
+    <div class="mainContent">
+      <%= yield %>
+    </div>
+  </div>
 
 </body>
 </html>
+
+<script type="text/javascript">
+var $subcriber =  function(id) {
+  console.log("<%= hostname %>");
+  var faye = new Faye.Client("http://<%= hostname %>:9292/faye");
+  faye.subscribe('/messages/new/' + id, function (data) {
+    eval(data);
+  });
+};
+</script>

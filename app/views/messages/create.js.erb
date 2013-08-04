@@ -1,0 +1,15 @@
+<% broadcast "/messages/new/#{@message.room_id}" do %>
+  owner = <%= @message.owner.id %>;
+  if(owner != $subcriber.cuid) {
+    $("#chat").append("<%=j render partial: "unseen_message",locals:{message: @message}%>");
+    window.unseen_message[<%= @message.room_id %>] = true;
+    cnt = parseInt($("#unseen-cnt").html()) + 1;
+    $("#unseen-cnt").html(cnt);
+    $("#unseen-cnt-glo").html(cnt);
+  } else
+    $("#chat").append("<%=j render partial: "message",locals:{message: @message}%>");
+  a = $("#chat-holder ul").height();
+  $("#chat-holder").scrollTop(a + 100);
+<% end %>
+CKEDITOR.instances.message_content.setData("");
+CKEDITOR.instances.message_content.focus();
