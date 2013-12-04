@@ -16,6 +16,7 @@ gem "rails3-generators"
 gem 'carrierwave'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'pry'
+gem 'rubycas-client-rails'
 
 gem "faye", "~> 0.8.9"
 gem "statemachine", "~> 2.2.0"

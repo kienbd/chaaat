@@ -2,6 +2,7 @@ class RoomsController < ApplicationController
   # GET /rooms
   # GET /rooms.json
 
+
   before_filter :signed_in_user
   before_filter :user_has_access,only: [:show]
   def index
@@ -148,5 +149,6 @@ class RoomsController < ApplicationController
   def user_has_access
     redirect_to root_path unless current_user.has_access?(params[:id].to_i)
   end
+
 
 end
